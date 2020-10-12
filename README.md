@@ -1,11 +1,10 @@
-# My Personal Project
+# Haley's Personal Project
 
-## A subtitle
+## Hockey Team Application:
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
 
-An example of text with **bold** and *italic* fonts.  Note that the IntelliJ markdown previewer doesn't seem to render 
-the bold and italic fonts correctly but they will appear correctly on GitHub.
+A **hockey team application**. Enter statistics for players and teams and view who is qualified
+for the NHL and determine how they are doing. Possible features include visual team and player leaderboards.
+This application may be used by hardcore hockey fans, including me and my dad! Canada's national winter sport
+*definitely* deserves a handy UI to catch up with your favourite hockey teams and players. 
+
