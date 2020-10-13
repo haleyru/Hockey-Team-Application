@@ -34,4 +34,17 @@ public class QualifiedTeamsTest {
         qualified.qualifyTeam(team2);
         assertEquals(team1, qualified.topTeam());
     }
+
+    @Test
+    public void testTeamList() {
+        HockeyTeam team1 = new HockeyTeam("Zoomers", 0, 0);
+        QualifiedTeams qualified = new QualifiedTeams();
+        qualified.qualifyTeam(team1);
+        assertEquals("Teams = [Zoomers]", qualified.teamList());
+
+        HockeyTeam team2 = new HockeyTeam("Boomers", 2, 5);
+        qualified.qualifyTeam(team2);
+
+        assertEquals("Teams = [Zoomers, Boomers]", qualified.teamList());
+    }
 }

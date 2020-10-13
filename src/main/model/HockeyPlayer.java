@@ -1,7 +1,6 @@
 package model;
 
 
-
 // Represents a hockey player having a name and a number of goals, assists, and points.
 public class HockeyPlayer {
     private String name;                     // Player's name
@@ -19,30 +18,35 @@ public class HockeyPlayer {
         this.points = goals + assists;
     }
 
+    // EFFECTS: returns name of hockey player
     public String getName() {
         return name;
     }
 
+    // EFFECTS: returns total goals scored
     public int getGoals() {
         return goals;
     }
 
+    // EFFECTS: returns total assists
     public int getAssists() {
         return assists;
     }
 
+    // EFFECTS: returns total points
     public int getPoints() {
         return points;
     }
 
 
-
+    // MODIFIES: this
     // EFFECTS: adds a goal to hockey player + updates points
     public void addGoal() {
         goals++;
         points++;
     }
 
+    // MODIFIES: this
     // EFFECTS: adds an assist to hockey player + updates points
     public void addAssist() {
         assists++;

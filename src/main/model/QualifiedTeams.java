@@ -16,17 +16,21 @@ public class QualifiedTeams {
         return teams.size();
     }
 
+    // REQUIRES: hockey team isn't qualified
+    // MODIFIES: this
     // EFFECTS: adds hockey team to list of qualified hockey teams
     public void qualifyTeam(HockeyTeam t) {
         teams.add(t);
     }
 
     // REQUIRES: hockey team is qualified
+    // MODIFIES: this
     // EFFECTS: removes hockey team from list of qualified hockey teams
     public void unQualifyTeam(HockeyTeam t) {
         teams.remove(t);
     }
 
+    // REQUIRES: at least one hockey team is qualified
     // EFFECTS: returns hockey team with most wins
     public HockeyTeam topTeam() {
         int n = 0;
@@ -39,4 +43,15 @@ public class QualifiedTeams {
         }
         return top;
     }
+
+    // EFFECTS: returns a string representation of all hockey teams qualified
+    public String teamList() {
+        ArrayList<String> teamlist = new ArrayList<>();
+        for (HockeyTeam t : teams) {
+            teamlist.add(t.getTeamName());
+        }
+        return "Teams = " + teamlist + "";
+    }
 }
+
+

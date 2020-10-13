@@ -23,41 +23,49 @@ public class HockeyTeam {
     public String getTeamName() {
         return teamname;
     }
+
     // EFFECTS: returns total number of wins
     public int getWins() {
         return wins;
     }
+
     // EFFECTS: returns total number of losses
     public int getLosses() {
         return losses;
     }
+
     // EFFECTS: returns total number of games played
     public int getGamesPlayed() {
         return gamesplayed;
     }
+
     // EFFECTS: returns total number of players on hockey team
     public int getTeamSize() {
         return team.size();
     }
 
     // REQUIRES: hockey player isn't already on hockey team
+    // MODIFIES: this
     // EFFECTS: adds hockey player to hockey team
     public void addPlayer(HockeyPlayer p) {
         team.add(p);
     }
 
     // REQUIRES: player is already on hockey team
+    // MODIFIES: this
     // EFFECTS: removes hockey player from hockey team
     public void removePlayer(HockeyPlayer p) {
         team.remove(p);
     }
 
+    // MODIFIES: this
     // EFFECTS: adds single win to hockey team and updates total games played
     public void addWin() {
         wins++;
         gamesplayed++;
     }
 
+    // MODIFIES: this
     // EFFECTS: adds single loss to hockey team and updates total games played
     public void addLoss() {
         losses++;
