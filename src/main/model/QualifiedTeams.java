@@ -2,55 +2,66 @@ package model;
 
 import java.util.ArrayList;
 
-// Represents a list of hockey teams qualified for the NHL
+// Represents a list of hockey teams qualified to play this season
 public class QualifiedTeams {
     private ArrayList<HockeyTeam> teams;
 
-    // EFFECTS: constructs an empty list of qualified hockey teams
+    // EFFECTS: construct empty list of qualified hockey teams
     public QualifiedTeams() {
         teams = new ArrayList<>();
     }
 
-    // EFFECTS: returns number of hockey teams qualified
+    // EFFECTS: return total number of hockey teams qualified
     public int getSize() {
         return teams.size();
     }
 
-    // REQUIRES: hockey team isn't qualified
-    // MODIFIES: this
-    // EFFECTS: adds hockey team to list of qualified hockey teams
-    public void qualifyTeam(HockeyTeam t) {
-        teams.add(t);
+    // EFFECTS: return hockey team at index position i in team list
+    public HockeyTeam getTeam(int i) {
+        return teams.get(i);
     }
 
-    // REQUIRES: hockey team is qualified
+    // EFFECTS: return all qualified hockey teams
+    public ArrayList<HockeyTeam> getTeams() {
+        return teams;
+    }
+
     // MODIFIES: this
-    // EFFECTS: removes hockey team from list of qualified hockey teams
+    // EFFECTS: add hockey team to list of qualified hockey teams
+    public void qualifyTeam(HockeyTeam t) {
+        if (!teams.contains(t)) {
+            teams.add(t);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: remove hockey team from list of qualified hockey teams
     public void unQualifyTeam(HockeyTeam t) {
         teams.remove(t);
     }
 
-    // REQUIRES: at least one hockey team is qualified
-    // EFFECTS: returns hockey team with most wins
-    public HockeyTeam topTeam() {
-        int n = 0;
-        HockeyTeam top = null;
-        for (HockeyTeam t : teams) {
-            if (t.getWins() > n) {
-                top = t;
-                n = t.getWins();
-            }
-        }
-        return top;
-    }
-
-    // EFFECTS: returns a string representation of all hockey teams qualified
+    // EFFECTS: return string representation of all qualified hockey team names
     public String teamList() {
+        int i = 0;
         ArrayList<String> teamlist = new ArrayList<>();
         for (HockeyTeam t : teams) {
             teamlist.add(t.getTeamName());
         }
         return "Teams = " + teamlist + "";
+    }
+
+    // EFFECTS: return top team based on wins and number of games played
+    public HockeyTeam topTeam() {
+        double n = 0;
+        HockeyTeam top = null;
+        for (HockeyTeam t : teams) {
+            double score = (double)t.getWins() / t.getGamesPlayed();
+            if (score > n) {
+                top = t;
+                n = score;
+            }
+        }
+        return top;
     }
 }
 

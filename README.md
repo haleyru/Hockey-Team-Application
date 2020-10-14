@@ -9,9 +9,9 @@ This application may be used by hardcore hockey fans, including me and my dad! C
 *definitely* deserves a handy UI to catch up with your favourite hockey teams and players. 
 
 ## My User Stories:
-- **As a user, I want to be able to** create a new hockey team.
+- **As a user, I want to be able to** create a new hockey team and add it to a list of qualified teams to play.
 - **As a user, I want to be able to** create a hockey player and add it to a hockey team.
 - **As a user, I want to be able to** edit a hockey player's statistics. (points, goals, assists)
 - **As a user, I want to be able to** edit a hockey team's statistics. (Games played, wins, losses)
-- **As a user, I want to be able to** add a hockey team to a list of qualified teams to play in the NHL.
 - **As a user, I want to be able to** select a hockey team and list all the players on that team.
+- **As a user, I want to be able to** view the top player in a team.

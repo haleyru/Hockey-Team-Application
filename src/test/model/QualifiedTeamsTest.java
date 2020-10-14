@@ -26,16 +26,6 @@ public class QualifiedTeamsTest {
     }
 
     @Test
-    public void testTopTeam() {
-        HockeyTeam team1 = new HockeyTeam("Zoomers", 5, 2);
-        HockeyTeam team2 = new HockeyTeam("Boomers", 2, 5);
-        QualifiedTeams qualified = new QualifiedTeams();
-        qualified.qualifyTeam(team1);
-        qualified.qualifyTeam(team2);
-        assertEquals(team1, qualified.topTeam());
-    }
-
-    @Test
     public void testTeamList() {
         HockeyTeam team1 = new HockeyTeam("Zoomers", 0, 0);
         QualifiedTeams qualified = new QualifiedTeams();
@@ -46,5 +36,19 @@ public class QualifiedTeamsTest {
         qualified.qualifyTeam(team2);
 
         assertEquals("Teams = [Zoomers, Boomers]", qualified.teamList());
+    }
+
+    @Test
+    public void testTopTeam() {
+        QualifiedTeams qualified = new QualifiedTeams();
+        HockeyTeam team1 = new HockeyTeam("Zoomers", 3, 3);
+        HockeyTeam team2 = new HockeyTeam("Boomers", 6, 0);
+        HockeyTeam team3 = new HockeyTeam("Soomers", 5, 1);
+
+        qualified.qualifyTeam(team1);
+        qualified.qualifyTeam(team2);
+        qualified.qualifyTeam(team3);
+
+        assertEquals(team2, qualified.topTeam());
     }
 }
