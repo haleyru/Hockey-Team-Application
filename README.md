@@ -15,3 +15,7 @@ This application may be used by hardcore hockey fans, including me and my dad! C
 - **As a user, I want to be able to** edit a hockey team's statistics. (Games played, wins, losses)
 - **As a user, I want to be able to** select a hockey team and list all the players on that team.
 - **As a user, I want to be able to** view the top player in a team.
+- **As a user, I want to be able to** save my created hockey teams to file.
+- **As a user, I want to be able to** load previously created hockey teams from file.
+- **As a user**, when I select quit from the application menu, I want to be reminded to save my hockey teams to file and have the option to do so or not.
+- **As a user**, when I start the application, I want to be given the option to load my hockey teams from file.

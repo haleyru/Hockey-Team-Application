@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class HockeyApp {
     public QualifiedTeams qualified;
     private Scanner input;
-
+    
     // EFFECTS: run hockey application
     public HockeyApp() {
         qualified = new QualifiedTeams();
