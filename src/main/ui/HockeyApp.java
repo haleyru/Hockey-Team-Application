@@ -3,18 +3,27 @@ package ui;
 import model.HockeyPlayer;
 import model.HockeyTeam;
 import model.QualifiedTeams;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Hockey team application
-// ** Borrowed parts of the TellerApp program **
+// ** Uses parts of the TellerApp program **
 public class HockeyApp {
+    private static final String JSON_STORE = "./data/hockeyTeams.json";
     public QualifiedTeams qualified;
     private Scanner input;
-    
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
     // EFFECTS: run hockey application
     public HockeyApp() {
         qualified = new QualifiedTeams();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runHockeyApp();
     }
 
@@ -25,12 +34,15 @@ public class HockeyApp {
         String command = null;
         input = new Scanner(System.in);
 
+        requestLoad();
+
         while (keepGoing) {
             displayMenu();
             command = input.next();
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+                requestSave();
                 keepGoing = false;
             } else {
                 processCommand(command);
@@ -39,17 +51,65 @@ public class HockeyApp {
         System.out.println("\nYou miss 100% of the shots you don't take. Bye now!");
     }
 
+    public void requestLoad() {
+        boolean keepGoing = true;
+        String command = null;
+        input = new Scanner(System.in);
+
+        while (keepGoing) {
+            System.out.println("\nLoad existing file?:");
+            System.out.println("\ty -> Yes");
+            System.out.println("\tn -> No");
+            command = input.next();
+            command = command.toLowerCase();
+
+            if (command.equals("y")) {
+                loadTeams();
+                keepGoing = false;
+            } else if (command.equals("n")) {
+                keepGoing = false;
+            } else {
+                System.out.println("Selection not valid... Shoot again!");
+            }
+        }
+    }
+
+    public void requestSave() {
+        boolean keepGoing = true;
+        String command = null;
+        input = new Scanner(System.in);
+
+        while (keepGoing) {
+            System.out.println("\nSave before quitting?:");
+            System.out.println("\ty -> Yes");
+            System.out.println("\tn -> No");
+            command = input.next();
+            command = command.toLowerCase();
+
+            if (command.equals("y")) {
+                saveTeams();
+                keepGoing = false;
+            } else if (command.equals("n")) {
+                keepGoing = false;
+            } else {
+                System.out.println("Selection not valid... Shoot again!");
+            }
+        }
+    }
+
     // EFFECTS: display main menu of options to user
     public void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Create new hockey team");
         System.out.println("\tb -> Create new player + add to existing team");
-        System.out.println("\tc -> View all hockey teams");
-        System.out.println("\td -> View all players in team");
+        System.out.println("\tc -> List all hockey teams");
+        System.out.println("\td -> List all players in team");
         System.out.println("\te -> View/Edit player");
         System.out.println("\tf -> View/Edit team");
-        System.out.println("\tg -> View Top Player in Team");
-        System.out.println("\th -> View Top Team");
+        System.out.println("\tg -> View Best Player in Team");
+        System.out.println("\th -> View Best Team");
+        System.out.println("\ti -> Save teams to file");
+        System.out.println("\tj -> Load teams from file");
         System.out.println("\tq -> Quit");
     }
 
@@ -88,8 +148,34 @@ public class HockeyApp {
             findTopPlayer();
         } else if (command.equals("h")) {
             findTopTeam();
+        } else if (command.equals("i")) {
+            saveTeams();
+        } else if (command.equals("j")) {
+            loadTeams();
         } else {
             System.out.println("Selection not valid... Shoot again!");
+        }
+    }
+
+    // EFFECTS: saves hockey teams to file
+    private void saveTeams() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(qualified);
+            jsonWriter.close();
+            System.out.println("Saved hockey teams to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: loads hockey teams from file
+    private void loadTeams() {
+        try {
+            qualified = jsonReader.read();
+            System.out.println("Loaded hockey teams from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 

@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Represents a list of hockey teams qualified to play this season
-public class QualifiedTeams {
+public class QualifiedTeams implements Writable {
     private ArrayList<HockeyTeam> teams;
 
     // EFFECTS: construct empty list of qualified hockey teams
@@ -63,6 +67,24 @@ public class QualifiedTeams {
         }
         return top;
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("teams", teamsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns all qualified teams as a JSON array
+    private JSONArray teamsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (HockeyTeam t : teams) {
+            jsonArray.put(t.toJson());
+        }
+        return jsonArray;
+    }
+
 }
 
 

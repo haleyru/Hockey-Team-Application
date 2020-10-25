@@ -1,0 +1,23 @@
+{"teams": [
+  {
+    "wins": 100,
+    "games played": 100,
+    "team name": "The A Team",
+    "players": [],
+    "losses": 0
+  },
+  {
+    "wins": 10,
+    "games played": 10,
+    "team name": "The B Team",
+    "players": [],
+    "losses": 0
+  },
+  {
+    "wins": 0,
+    "games played": 0,
+    "team name": "The C Team",
+    "players": [],
+    "losses": 0
+  }
+]}

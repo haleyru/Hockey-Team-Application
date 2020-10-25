@@ -1,0 +1,54 @@
+{"teams": [
+    {
+        "wins": 36,
+        "games played": 63,
+        "team name": "Vancouver Canucks",
+        "players": [
+            {
+                "player name": "J. Miller",
+                "assists": 45,
+                "goals": 27,
+                "points": 72
+            },
+            {
+                "player name": "J. Beagle",
+                "assists": 6,
+                "goals": 2,
+                "points": 8
+            },
+            {
+                "player name": "A. Edler",
+                "assists": 28,
+                "goals": 5,
+                "points": 33
+            }
+        ],
+        "losses": 27
+    },
+    {
+        "wins": 36,
+        "games played": 63,
+        "team name": "Calgary Flames",
+        "players": [
+            {
+                "player name": "M. Tkachuk",
+                "assists": 38,
+                "goals": 23,
+                "points": 61
+            },
+            {
+                "player name": "D. Ryan",
+                "assists": 19,
+                "goals": 10,
+                "points": 29
+            },
+            {
+                "player name": "M. Frolik",
+                "assists": 5,
+                "goals": 5,
+                "points": 10
+            }
+        ],
+        "losses": 27
+    }
+]}

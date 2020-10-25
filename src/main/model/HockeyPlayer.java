@@ -1,16 +1,17 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
+// Represents single hockey player with name, number of goals, assists, and points.
+public class HockeyPlayer implements Writable {
+    private String name;                     // Player name
+    private int goals;                       // Player goals
+    private int assists;                     // Player assists
+    private int points;                      // Player points (goals + assists)
 
 
-// Represents a hockey player having a name and a number of goals, assists, and points.
-public class HockeyPlayer {
-    private String name;                     // Player's name
-    private int goals;                       // Player's goals
-    private int assists;                     // Player's assists
-    private int points;                      // Player's points (goals + assists)
-
-
-    // EFFECTS: construct a hockey player with a name, initial goals/assists & points.
+    // EFFECTS: constructs single hockey player with name, initial goals/assists & points.
     public HockeyPlayer(String name, int goals, int assists) {
         this.name = name;
         this.goals = goals;
@@ -18,7 +19,7 @@ public class HockeyPlayer {
         this.points = goals + assists;
     }
 
-    // EFFECTS: return name of hockey player
+    // EFFECTS: returns name of hockey player
     public String getName() {
         return name;
     }
@@ -39,21 +40,31 @@ public class HockeyPlayer {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a goal to hockey player + updates points accordingly
+    // EFFECTS: adds single goal to hockey player + updates points
     public void addGoal() {
         goals++;
         points++;
     }
 
     // MODIFIES: this
-    // EFFECTS: adds an assist to hockey player + updates points accordingly
+    // EFFECTS: adds assist to hockey player + updates points
     public void addAssist() {
         assists++;
         points++;
     }
 
-    // EFFECTS: returns a string representation of a hockey player
+    // EFFECTS: returns string representation of a hockey player
     public String toString() {
         return "[Name = " + name + ", Points = " + points + ", Goals = " + goals + ", Assists = " + assists + "]";
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("player name", name);
+        json.put("goals", goals);
+        json.put("assists", assists);
+        json.put("points", points);
+        return json;
     }
 }

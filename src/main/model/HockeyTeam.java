@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Represents a hockey team having a name, a number of wins, losses, and total games played.
-public class HockeyTeam {
+public class HockeyTeam implements Writable {
     private String teamName;                     // Name of hockey team
     private int gamesPlayed;                     // Total games played this season
     private int wins;                            // Total wins this season
@@ -104,6 +108,27 @@ public class HockeyTeam {
             }
         }
         return top;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("team name", teamName);
+        json.put("games played", gamesPlayed);
+        json.put("wins", wins);
+        json.put("losses", losses);
+        json.put("players", playersToJson());
+        return json;
+    }
+
+    // EFFECTS: returns players in hockey team as a JSON array
+    private JSONArray playersToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (HockeyPlayer p : team) {
+            jsonArray.put(p.toJson());
+        }
+        return jsonArray;
     }
 }
 
