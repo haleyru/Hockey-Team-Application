@@ -19,7 +19,7 @@ public class HockeyApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    // EFFECTS: run hockey application
+    // EFFECTS: runs hockey application
     public HockeyApp() {
         qualified = new QualifiedTeams();
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -28,7 +28,7 @@ public class HockeyApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: process user input
+    // EFFECTS: processes user input
     public void runHockeyApp() {
         boolean keepGoing = true;
         String command = null;
@@ -37,7 +37,7 @@ public class HockeyApp {
         requestLoad();
 
         while (keepGoing) {
-            displayMenu();
+            displayMenu1();
             command = input.next();
             command = command.toLowerCase();
 
@@ -45,12 +45,14 @@ public class HockeyApp {
                 requestSave();
                 keepGoing = false;
             } else {
-                processCommand(command);
+                processCommand1(command);
             }
         }
         System.out.println("\nYou miss 100% of the shots you don't take. Bye now!");
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads previously created hockey teams from file
     public void requestLoad() {
         boolean keepGoing = true;
         String command = null;
@@ -74,6 +76,8 @@ public class HockeyApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: saves created hockey teams to file
     public void requestSave() {
         boolean keepGoing = true;
         String command = null;
@@ -97,8 +101,8 @@ public class HockeyApp {
         }
     }
 
-    // EFFECTS: display main menu of options to user
-    public void displayMenu() {
+    // EFFECTS: displays main menu of options to user
+    public void displayMenu1() {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Create new hockey team");
         System.out.println("\tb -> Create new player + add to existing team");
@@ -113,11 +117,13 @@ public class HockeyApp {
         System.out.println("\tq -> Quit");
     }
 
-    // EFFECTS: display menu of options to user for edit player
+    // EFFECTS: displays menu of options to user for edit player
     public void displayMenu2() {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Add goal");
         System.out.println("\tb -> Add assist");
+        System.out.println("\tc -> Transfer player");
+        System.out.println("\tc -> Retire player");
         System.out.println("\tq -> Quit");
     }
 
@@ -130,8 +136,8 @@ public class HockeyApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: process user command for main menu
-    public void processCommand(String command) {
+    // EFFECTS: processes user command for main menu
+    public void processCommand1(String command) {
         if (command.equals("a")) {
             createNewTeam();
         } else if (command.equals("b")) {
@@ -152,6 +158,40 @@ public class HockeyApp {
             saveTeams();
         } else if (command.equals("j")) {
             loadTeams();
+        } else {
+            System.out.println("Selection not valid... Shoot again!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command for edit player,
+    //          returns true if player is retired or transferred between teams
+    public boolean processCommand2(String command, HockeyTeam team, HockeyPlayer player) {
+        if (command.equals("a")) {
+            addGoal(player);
+            return false;
+        } else if (command.equals("b")) {
+            addAssist(player);
+            return false;
+        } else if (command.equals("c")) {
+            transferPlayer(team, player);
+            return true;
+        } else if (command.equals("d")) {
+            retirePlayer(team, player);
+            return true;
+        } else {
+            System.out.println("Selection not valid... Shoot again!");
+        }
+        return processCommand2(command, team, player);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command for edit team
+    public void processCommand3(String command, int team, String teamName) {
+        if (command.equals("a")) {
+            addWin(team, teamName);
+        } else if (command.equals("b")) {
+            addLoss(team, teamName);
         } else {
             System.out.println("Selection not valid... Shoot again!");
         }
@@ -180,31 +220,7 @@ public class HockeyApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: process user command for edit player
-    public void processCommand2(String command, int team, int player, String playerName) {
-        if (command.equals("a")) {
-            addGoal(team, player, playerName);
-        } else if (command.equals("b")) {
-            addAssist(team, player, playerName);
-        } else {
-            System.out.println("Selection not valid... Shoot again!");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: process user command for edit team
-    public void processCommand3(String command, int team, String teamName) {
-        if (command.equals("a")) {
-            addWin(team, teamName);
-        } else if (command.equals("b")) {
-            addLoss(team, teamName);
-        } else {
-            System.out.println("Selection not valid... Shoot again!");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: create new hockey team via user input
+    // EFFECTS: creates new hockey team via user input
     public void createNewTeam() {
         System.out.println("Enter team wins: ");
         int wins = input.nextInt();
@@ -224,7 +240,7 @@ public class HockeyApp {
     // REQUIRES: at least one team exists
     //           + selected team exists in list of teams
     // MODIFIES: this
-    // EFFECTS: create new hockey player via user input
+    // EFFECTS: creates new hockey player via user input
     //          + adds to existing team
     public void createNewPlayer() {
         String teams = qualified.teamList();
@@ -248,14 +264,14 @@ public class HockeyApp {
                 + " successfully!");
     }
 
-    // EFFECTS: return string representation of all teams qualified
+    // EFFECTS: returns string representation of all teams qualified
     public void viewAllQualifiedTeams() {
         System.out.println(qualified.teamList());
     }
 
     // REQUIRES: at least one team exists
     //           + selected team exists in list of teams
-    // EFFECTS: return string representation of players on a team
+    // EFFECTS: returns string representation of all players on a team
     public void viewAllPlayersInTeam() {
         System.out.println("Select a team: [0, 1, 2..]");
         System.out.println(qualified.teamList());
@@ -270,28 +286,29 @@ public class HockeyApp {
     //           + at least one player exists
     //           + selected player exists in list of players
     // MODIFIES: this
-    // EFFECTS: process user input to add goals/assists to player or transfer to separate team
+    // EFFECTS: processes user input to add goals/assists to player or transfer to separate team
     public void editPlayer() {
         System.out.println("Select a team: [0, 1, 2..]");
         System.out.println(qualified.teamList());
-        int team = input.nextInt();
+        int teamSelection = input.nextInt();
+        HockeyTeam teamA = qualified.getTeam(teamSelection);
         System.out.println("Select a player: [0, 1, 2..]");
-        System.out.println(qualified.getTeam(team).playerList());
-        int player = input.nextInt();
-        String playerName = qualified.getTeam(team).getPlayer(player).getName();
+        System.out.println(qualified.getTeam(teamSelection).playerList());
+        int playerSelection = input.nextInt();
+        HockeyPlayer playerA = qualified.getTeam(teamSelection).getPlayer(playerSelection);
         boolean keepGoing = true;
         String command = null;
-
         while (keepGoing) {
-            System.out.println(qualified.getTeam(team).getPlayer(player).toString());
+            System.out.println(playerA.toString());
             displayMenu2();
             command = input.next();
             command = command.toLowerCase();
-
             if (command.equals("q")) {
                 keepGoing = false;
             } else {
-                processCommand2(command, team, player, playerName);
+                if (processCommand2(command, teamA, playerA)) {
+                    keepGoing = false;
+                }
             }
         }
     }
@@ -299,7 +316,7 @@ public class HockeyApp {
     // REQUIRES: at least one team exists
     //           + selected team exists in list of teams
     // MODIFIES: this
-    // EFFECTS: process user input to add wins/losses to team
+    // EFFECTS: processes user input to add wins/losses to team
     public void editTeam() {
         System.out.println("Select a team: [0, 1, 2..]");
         System.out.println(qualified.teamList());
@@ -324,28 +341,52 @@ public class HockeyApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: add goal to player
-    public void addGoal(int team, int player, String playerName) {
-        qualified.getTeam(team).getPlayer(player).addGoal();
-        System.out.println("Goal added to " + playerName + " successfully!");
+    // EFFECTS: adds goal to player
+    public void addGoal(HockeyPlayer player) {
+        player.addGoal();
+        System.out.println("Goal added to " + player.getName() + " successfully!");
     }
 
     // MODIFIES: this
-    // EFFECTS: add assist to player
-    public void addAssist(int team, int player, String playerName) {
-        qualified.getTeam(team).getPlayer(player).addAssist();
-        System.out.println("Assist added to " + playerName + " successfully!");
+    // EFFECTS: adds assist to player
+    public void addAssist(HockeyPlayer player) {
+        player.addAssist();
+        System.out.println("Assist added to " + player.getName() + " successfully!");
+    }
+
+    // REQUIRES: teamB exists in list of teams
+    // MODIFIES: this
+    // EFFECTS: transfers player from teamA to teamB
+    private void transferPlayer(HockeyTeam teamA, HockeyPlayer player) {
+        String teams = qualified.teamList();
+        System.out.println("Select new team: [0, 1, 2..]");
+        System.out.println(teams);
+        int teamFinal = input.nextInt();
+        HockeyTeam teamB = qualified.getTeam(teamFinal);
+        teamA.removePlayer(player);
+        teamB.addPlayer(player);
+        System.out.println("Successfully transferred player " + player.getName() + " from "
+                + teamA.getTeamName() + " to " + teamB.getTeamName());
+    }
+
+    // REQUIRES: teamB exists in list of teams
+    // MODIFIES: this
+    // EFFECTS: transfers player from teamA to teamB
+    private void retirePlayer(HockeyTeam teamA, HockeyPlayer player) {
+        teamA.removePlayer(player);
+        System.out.println("Successfully retired player " + player.getName() + " from "
+                + teamA.getTeamName());
     }
 
     // MODIFIES: this
-    // EFFECTS: add win to team
+    // EFFECTS: adds win to team
     public void addWin(int team, String teamName) {
         qualified.getTeam(team).addWin();
         System.out.println("Win added to " + teamName + " successfully!");
     }
 
     // MODIFIES: this
-    // EFFECTS: add loss to team
+    // EFFECTS: adds loss to team
     public void addLoss(int team, String teamName) {
         qualified.getTeam(team).addLoss();
         System.out.println("Loss added to " + teamName + " successfully!");
@@ -353,7 +394,7 @@ public class HockeyApp {
 
     // REQUIRES: at least one team exists
     //           + selected team exists in list of teams
-    // EFFECTS: return string representation of top player in chosen team
+    // EFFECTS: returns string representation of top player in chosen team
     public void findTopPlayer() {
         System.out.println("Select a team: [0, 1, 2..]");
         System.out.println(qualified.teamList());
@@ -363,7 +404,7 @@ public class HockeyApp {
 
     }
 
-    // EFFECTS: return string representation of number one team qualified
+    // EFFECTS: returns string representation of number one team qualified
     public void findTopTeam() {
         System.out.println("Top Team: " + qualified.topTeam().getTeamName() + "");
     }
