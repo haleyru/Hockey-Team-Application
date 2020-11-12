@@ -91,6 +91,15 @@ public class HockeyTeam implements Writable {
         return "Players = " + players + "";
     }
 
+    // EFFECTS: return number of players on hockey team
+    public int getPlayers() {
+        int i = 0;
+        for (HockeyPlayer p : team) {
+            i++;
+        }
+        return i;
+    }
+
     // EFFECTS: return string representation of team name, wins, losses, total games played
     public String teamStats() {
         return "[Team name = " + teamName + ", Wins = " + wins + ", Losses = " + losses + ", Games played = "

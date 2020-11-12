@@ -10,9 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-// Hockey team application
+// Hockey Team Application UI
 // ** Uses parts of the TellerApp program **
-public class HockeyApp {
+public class HockeyConsoleUI {
     private static final String JSON_STORE = "./data/hockeyTeams.json";
     public QualifiedTeams qualified;
     private Scanner input;
@@ -20,7 +20,7 @@ public class HockeyApp {
     private JsonReader jsonReader;
 
     // EFFECTS: runs hockey application
-    public HockeyApp() {
+    public HockeyConsoleUI() {
         qualified = new QualifiedTeams();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -123,7 +123,7 @@ public class HockeyApp {
         System.out.println("\ta -> Add goal");
         System.out.println("\tb -> Add assist");
         System.out.println("\tc -> Transfer player");
-        System.out.println("\tc -> Retire player");
+        System.out.println("\td -> Retire player");
         System.out.println("\tq -> Quit");
     }
 
