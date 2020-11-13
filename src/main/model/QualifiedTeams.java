@@ -33,9 +33,7 @@ public class QualifiedTeams implements Writable {
     // MODIFIES: this
     // EFFECTS: add hockey team to list of qualified hockey teams
     public void qualifyTeam(HockeyTeam t) {
-        if (!teams.contains(t)) {
-            teams.add(t);
-        }
+        teams.add(t);
     }
 
     // MODIFIES: this

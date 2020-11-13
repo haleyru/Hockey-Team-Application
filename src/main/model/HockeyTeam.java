@@ -56,9 +56,7 @@ public class HockeyTeam implements Writable {
     // MODIFIES: this
     // EFFECTS: add hockey player to hockey team
     public void addPlayer(HockeyPlayer p) {
-        if (!team.contains(p)) {
-            team.add(p);
-        }
+        team.add(p);
     }
 
     // MODIFIES: this
