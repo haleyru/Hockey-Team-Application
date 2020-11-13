@@ -219,7 +219,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             playersModel.clear(); // reset right pane
 
             // add all players in team to right pane
-            for (int i = 0; i < team.getPlayers(); i++) {
+            for (int i = 0; i < team.getTeamSize(); i++) {
                 playersModel.addElement(team.getPlayer(i).toString());
             }
 
@@ -262,7 +262,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             playersModel.clear(); // reset right pane
 
             // add all players in team to right pane
-            for (int i = 0; i < team.getPlayers(); i++) {
+            for (int i = 0; i < team.getTeamSize(); i++) {
                 playersModel.addElement(team.getPlayer(i).toString());
             }
 
@@ -284,7 +284,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             playersModel.clear(); // reset right pane
 
             // add all players in team to right pane
-            for (int i = 0; i < team.getPlayers(); i++) {
+            for (int i = 0; i < team.getTeamSize(); i++) {
                 playersModel.addElement(team.getPlayer(i).toString());
             }
 
@@ -303,7 +303,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             playersModel.clear(); // reset right pane
 
             // add all players in team to right pane
-            for (int i = 0; i < selected.getPlayers(); i++) {
+            for (int i = 0; i < selected.getTeamSize(); i++) {
                 playersModel.addElement(selected.getPlayer(i).toString());
             }
 
@@ -332,7 +332,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             selected.addPlayer(hockeyplayer); // add player to team
 
             // add all players in team to right pane
-            for (int i = 0; i < selected.getPlayers(); i++) {
+            for (int i = 0; i < selected.getTeamSize(); i++) {
                 playersModel.addElement(selected.getPlayer(i).toString());
             }
 
