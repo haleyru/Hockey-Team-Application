@@ -1,6 +1,5 @@
 package gui;
 
-import model.HockeyPlayer;
 import model.HockeyTeam;
 import model.QualifiedTeams;
 import persistence.JsonReader;
@@ -17,14 +16,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
+
 // Hockey Team Application GUI
 // ** Borrows features from ListDemo.java from oracle
 public class HockeyGUI extends JPanel implements ListSelectionListener {
     public static QualifiedTeams qualifiedTeams;
-    private JList<String> teams;
-    private JList<String> players;
-    private DefaultListModel<String> teamModel;
-    private DefaultListModel<String> playersModel;
     private static final String addTeamString = "Add Team";
     private static final String addPlayerString = "Add Player";
     private static final String viewPlayerString = "View Players";
@@ -32,6 +28,9 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     private static final String addAssistString = "Add Assist";
     private static final String retirePlayerString = "Retire Player";
     private static final String retireTeamString = "Retire Team";
+    public static JFrame frame = new JFrame("Hockey Team Application");
+    private static final String JSON_STORE = "./data/hockeyTeams.json";
+    private static final ImageIcon icon = new ImageIcon("./pictures/nhl.png");
     private JButton addTeamButton;
     private JButton addPlayerButton;
     private JButton viewPlayersButton;
@@ -39,20 +38,22 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     private JButton addAssistButton;
     private JButton retirePlayerButton;
     private JButton retireTeamButton;
-    private JTextField teamName;
-    private JTextField playerName;
+    public static JList<String> teams;
+    public static JList<String> players;
+    public static JTextField teamName;
+    public static JTextField playerName;
+    public static DefaultListModel<String> teamModel;
+    public static DefaultListModel<String> playersModel;
     private static boolean load;
-    public static JFrame frame = new JFrame("Hockey Team Application");
-    private static final String JSON_STORE = "./data/hockeyTeams.json";
     private static JsonWriter jsonWriter;
 
-    // EFFECTS: loads + runs hockey application
+    // Loads + runs hockey application
     public HockeyGUI() {
         super(new BorderLayout());
+
+        // load teams depending on user input:
         jsonWriter = new JsonWriter(JSON_STORE);
         JsonReader jsonReader = new JsonReader(JSON_STORE);
-
-        // load teams depending on user input
         if (load) {
             try {
                 qualifiedTeams = jsonReader.read();
@@ -63,7 +64,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             qualifiedTeams = new QualifiedTeams();
         }
 
-        // helper functions for GUI
+        // helper functions for GUI:
         JScrollPane listScrollPane = setUpTeams(qualifiedTeams);
         JScrollPane listScrollPane2 = setUpPlayers();
         setUpButtons();
@@ -71,7 +72,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets up player scroll pane
+    // EFFECTS: sets up player scroll pane - begins empty
     private JScrollPane setUpPlayers() {
         playersModel = new DefaultListModel<>();
         players = new JList<>(playersModel);
@@ -82,7 +83,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets up team scroll pane
+    // EFFECTS: sets up team scroll pane - begins with loaded teams
     private JScrollPane setUpTeams(QualifiedTeams qualified) {
         teamModel = new DefaultListModel<>();
 
@@ -181,12 +182,14 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     // EFFECTS: draws buttons + panels to screen + displays to user.
     private void drawGUI(JScrollPane listScrollPane, JScrollPane listScrollPane2) {
         JPanel buttonPane1 = new JPanel();
+        JLabel label = new JLabel(icon);
         buttonPane1.setLayout(new BoxLayout(buttonPane1, BoxLayout.LINE_AXIS));
         buttonPane1.add(viewPlayersButton);
         buttonPane1.add(Box.createHorizontalStrut(5));
         buttonPane1.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane1.add(Box.createHorizontalStrut(5));
         buttonPane1.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        buttonPane1.add(label);
 
         JPanel buttonPane2 = new JPanel();
         buttonPane2.setLayout(new GridLayout(0,2));
@@ -205,249 +208,6 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         add(buttonPane2, BorderLayout.AFTER_LAST_LINE);
     }
 
-    // MODIFIES: this
-    // EFFECTS: removes hockey player from hockey team
-    class RetirePlayerListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            int indexP = players.getSelectedIndex(); // get selected index (player)
-            int indexT = teams.getSelectedIndex(); // get selected index (team)
-            HockeyTeam team = qualifiedTeams.getTeam(indexT); // get selected team
-            HockeyPlayer player = team.getPlayer(indexP); // get selected player
-            team.removePlayer(player);
-
-            playersModel.clear(); // reset right pane
-
-            // add all players in team to right pane
-            for (int i = 0; i < team.getTeamSize(); i++) {
-                playersModel.addElement(team.getPlayer(i).toString());
-            }
-
-            playSound("./sounds/boo.wav", 0.07); // play appropriate sound effect
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: removes hockey team from list of teams
-    class RetireTeamListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            int indexT = teams.getSelectedIndex(); // get selected index
-            HockeyTeam team = qualifiedTeams.getTeam(indexT); // get selected team
-
-            qualifiedTeams.unQualifyTeam(team);
-
-            teamModel.clear(); // reset left pane
-
-            // add all teams to left pane
-            for (int i = 0; i < qualifiedTeams.getSize(); i++) {
-                teamModel.addElement(qualifiedTeams.getTeam(i).getTeamName());
-            }
-
-            playSound("./sounds/boo.wav", 0.07); // play appropriate sound effect
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: add goal to player depending on user index
-    class AddGoalListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            int indexP = players.getSelectedIndex(); // get selected index (player)
-            int indexT = teams.getSelectedIndex(); // get selected index (team)
-            HockeyTeam team = qualifiedTeams.getTeam(indexT); // get selected team
-            HockeyPlayer player = team.getPlayer(indexP); // get selected player
-            player.addGoal(); // add goal to player
-
-            playersModel.clear(); // reset right pane
-
-            // add all players in team to right pane
-            for (int i = 0; i < team.getTeamSize(); i++) {
-                playersModel.addElement(team.getPlayer(i).toString());
-            }
-
-            playSound("./sounds/goal.wav", 0.07); // play appropriate sound effect
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: add assist to player depending on user index
-    class AddAssistListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            int indexP = players.getSelectedIndex(); // get selected index (player)
-            int indexT = teams.getSelectedIndex(); // get selected index (team)
-            HockeyTeam team = qualifiedTeams.getTeam(indexT); // get selected team
-            HockeyPlayer player = team.getPlayer(indexP); // get selected player
-            player.addAssist(); // add goal to player
-
-            playersModel.clear(); // reset right pane
-
-            // add all players in team to right pane
-            for (int i = 0; i < team.getTeamSize(); i++) {
-                playersModel.addElement(team.getPlayer(i).toString());
-            }
-
-            playSound("./sounds/goal.wav", 0.07); // play appropriate sound effect
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: configures view players button - displays all players on
-    //          hockey team to right panel depending on user index
-    class ViewPlayersListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            int index = teams.getSelectedIndex(); // get selected index
-            HockeyTeam selected = qualifiedTeams.getTeam(index); // get selected team
-            playersModel.clear(); // reset right pane
-
-            // add all players in team to right pane
-            for (int i = 0; i < selected.getTeamSize(); i++) {
-                playersModel.addElement(selected.getPlayer(i).toString());
-            }
-
-            playSound("./sounds/wow.wav", 0.07); // play appropriate sound effect
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: configures add player button - create new hockey player with
-    //          input name, adds to right panel
-    class AddPlayerListener implements ActionListener, DocumentListener {
-        private boolean alreadyEnabled = false;
-        private final JButton button;
-
-        public AddPlayerListener(JButton button) {
-            this.button = button;
-        }
-
-        //Required by ActionListener.
-        public void actionPerformed(ActionEvent e) {
-            String name = playerName.getText(); // get user input
-            int index = teams.getSelectedIndex(); // get selected index
-            HockeyTeam selected = qualifiedTeams.getTeam(index); // get selected team
-            playersModel.clear(); // reset right pane
-            HockeyPlayer hockeyplayer = new HockeyPlayer(name, 0,0); // create new player
-            selected.addPlayer(hockeyplayer); // add player to team
-
-            // add all players in team to right pane
-            for (int i = 0; i < selected.getTeamSize(); i++) {
-                playersModel.addElement(selected.getPlayer(i).toString());
-            }
-
-            // reset the text field.
-            playerName.requestFocusInWindow();
-            playerName.setText("");
-
-            playSound("./sounds/applause.wav", 0.10); // play appropriate sound effect
-        }
-
-        //Required by DocumentListener.
-        public void insertUpdate(DocumentEvent e) {
-            enableButton();
-        }
-
-        //Required by DocumentListener.
-        public void removeUpdate(DocumentEvent e) {
-            handleEmptyTextField(e);
-        }
-
-        //Required by DocumentListener.
-        public void changedUpdate(DocumentEvent e) {
-            if (!handleEmptyTextField(e)) {
-                enableButton();
-            }
-        }
-
-        //EFFECTS: enables add player button if it isn't already
-        private void enableButton() {
-            if (!alreadyEnabled) {
-                button.setEnabled(true);
-            }
-        }
-
-        //EFFECTS: if user input is empty, disable add player button
-        private boolean handleEmptyTextField(DocumentEvent e) {
-            if (e.getDocument().getLength() <= 0) {
-                button.setEnabled(false);
-                alreadyEnabled = false;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: configures add team button - creates new hockey team
-    //          with input name, adds to left panel
-    class AddTeamListener implements ActionListener, DocumentListener {
-        private boolean alreadyEnabled = false;
-        private final JButton button;
-
-        public AddTeamListener(JButton button) {
-            this.button = button;
-        }
-
-        //Required by ActionListener.
-        public void actionPerformed(ActionEvent e) {
-            String name = teamName.getText(); // get user input
-
-            HockeyTeam hockeyTeam = new HockeyTeam(name, 0, 0); // create new team
-            qualifiedTeams.qualifyTeam(hockeyTeam); // add team to list of teams
-            teamModel.addElement(teamName.getText()); // add team to left pane
-
-            // reset the text field.
-            teamName.requestFocusInWindow();
-            teamName.setText("");
-
-            playSound("./sounds/cheer.wav", 0.07); // play appropriate sound effect
-        }
-
-        //Required by DocumentListener.
-        public void insertUpdate(DocumentEvent e) {
-            enableButton();
-        }
-
-        //Required by DocumentListener.
-        public void removeUpdate(DocumentEvent e) {
-            handleEmptyTextField(e);
-        }
-
-        //Required by DocumentListener.
-        public void changedUpdate(DocumentEvent e) {
-            if (!handleEmptyTextField(e)) {
-                enableButton();
-            }
-        }
-
-        //EFFECTS: enables add team button if it isn't already
-        private void enableButton() {
-            if (!alreadyEnabled) {
-                button.setEnabled(true);
-            }
-        }
-
-        //EFFECTS: if user input is empty, disable add team button
-        private boolean handleEmptyTextField(DocumentEvent e) {
-            if (e.getDocument().getLength() <= 0) {
-                button.setEnabled(false);
-                alreadyEnabled = false;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    //Required by ListSelectionListener.
-    public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting()) {
-
-            //No selection, disable button.
-            //Selection, enable button.
-            viewPlayersButton.setEnabled(teams.getSelectedIndex() != -1);
-        }
-    }
 
     // MODIFIES: this
     // EFFECTS: create the hockey application GUI and display it
@@ -476,7 +236,6 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         frame.setContentPane(newContentPane);
         frame.pack();
         frame.setVisible(true);
-
     }
 
     // MODIFIES: this
@@ -534,6 +293,17 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         FloatControl gain = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
         float decibels = (float) (Math.log(vol) / Math.log(10) * 20);
         gain.setValue(decibels);
+    }
+
+    @Override
+    //Required by ListSelectionListener.
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+
+            //No selection, disable button.
+            //Selection, enable button.
+            viewPlayersButton.setEnabled(teams.getSelectedIndex() != -1);
+        }
     }
 
     // EFFECTS: starts GUI
