@@ -1,6 +1,8 @@
 package gui;
 
+import exceptions.TeamAlreadyExistsException;
 import model.HockeyTeam;
+import model.QualifiedTeams;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -9,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static gui.HockeyGUI.teamName;
-import static gui.HockeyGUI.qualifiedTeams;
 import static gui.HockeyGUI.teamModel;
 import static gui.HockeyGUI.playSound;
 
@@ -17,9 +18,11 @@ import static gui.HockeyGUI.playSound;
 class AddTeamListener implements ActionListener, DocumentListener {
     private boolean alreadyEnabled = false;
     private final JButton button;
+    private QualifiedTeams qualifiedTeams;
 
-    public AddTeamListener(JButton button) {
+    public AddTeamListener(JButton button, QualifiedTeams qualifiedTeams) {
         this.button = button;
+        this.qualifiedTeams = qualifiedTeams;
     }
 
     // Required by ActionListener.
@@ -28,16 +31,20 @@ class AddTeamListener implements ActionListener, DocumentListener {
     //          with input name, adds to left panel
     public void actionPerformed(ActionEvent e) {
         String name = teamName.getText(); // get user input
-
         HockeyTeam hockeyTeam = new HockeyTeam(name, 0, 0); // create new team
-        qualifiedTeams.qualifyTeam(hockeyTeam); // add team to list of teams
-        teamModel.addElement(teamName.getText()); // add team to left pane
 
-        // reset the text field.
-        teamName.requestFocusInWindow();
-        teamName.setText("");
+        try {
+            qualifiedTeams.qualifyTeam(hockeyTeam); // add team to list of teams
+            teamModel.addElement(teamName.getText()); // add team to left pane
+            playSound("./sounds/cheer.wav", 0.07);
+        } catch (TeamAlreadyExistsException ex) {
+            playSound("./sounds/error.wav", 0.07);
+        } finally {
 
-        playSound("./sounds/cheer.wav", 0.07); // play appropriate sound effect
+            // reset the text field.
+            teamName.requestFocusInWindow();
+            teamName.setText("");
+        }
     }
 
     //Required by DocumentListener.

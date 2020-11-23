@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.TeamAlreadyExistsException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -31,15 +32,22 @@ public class QualifiedTeams implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: add hockey team to list of qualified hockey teams
-    public void qualifyTeam(HockeyTeam t) {
-        teams.add(t);
+    // EFFECTS: if hockey team is not added already, add hockey team to list of qualified hockey teams;
+    //          otherwise throw TeamAlreadyExists exception.
+    public void qualifyTeam(HockeyTeam t) throws TeamAlreadyExistsException {
+        if (!teams.contains(t)) {
+            teams.add(t);
+        } else {
+            throw new TeamAlreadyExistsException();
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: remove hockey team from list of qualified hockey teams
     public void unQualifyTeam(HockeyTeam t) {
-        teams.remove(t);
+        if (teams.contains(t)) {
+            teams.remove(t);
+        }
     }
 
     // EFFECTS: return string representation of all qualified hockey team names

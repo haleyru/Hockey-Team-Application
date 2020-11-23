@@ -21,3 +21,8 @@ This application may be used by hardcore hockey fans, including me and my dad! C
 - **As a user, I want to be able to** load previously created hockey teams from a file.
 - **As a user**, when I select quit from the application menu, I want to be reminded to save my hockey teams to file and have the option to do so or not.
 - **As a user**, when I start the application, I want to be given the option to load my hockey teams from a file.
+
+## Phase 4: Task 2:
+- Test and design a class in your model package that is robust.  You must have at least one method that throws a checked exception.  You must have one test for the case where the exception is expected and another where the exception is not expected.
+
+I have chosen to give the QualifiedTeams class a robust design, where the TeamAlreadyExistsException is thrown if the user tries to add a team with an already existing team name. Cases of where the exception is thrown and where it is not thrown has been tested in QualifiedTeamsTest.

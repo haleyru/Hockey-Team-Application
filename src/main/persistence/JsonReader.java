@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.TeamAlreadyExistsException;
 import model.HockeyPlayer;
 import model.QualifiedTeams;
 import model.HockeyTeam;
@@ -63,7 +64,11 @@ public class JsonReader {
         int wins = jsonObject.getInt("wins");
         int losses = jsonObject.getInt("losses");
         HockeyTeam team = new HockeyTeam(name, wins, losses);
-        teams.qualifyTeam(team);
+        try {
+            teams.qualifyTeam(team);
+        } catch (TeamAlreadyExistsException e) {
+            System.out.println("Team already exists");
+        }
         JSONArray jsonArray = jsonObject.getJSONArray("players");
         for (Object json : jsonArray) {
             JSONObject nextPlayer = (JSONObject) json;

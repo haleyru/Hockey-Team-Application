@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.TeamAlreadyExistsException;
 import model.HockeyPlayer;
 import model.HockeyTeam;
 import model.QualifiedTeams;
@@ -50,9 +51,14 @@ public class JsonWriterTest extends JsonTest {
             HockeyTeam A = new HockeyTeam("The A Team", 100, 0);
             HockeyTeam B = new HockeyTeam("The B Team", 10, 0);
             HockeyTeam C = new HockeyTeam("The C Team", 0, 0);
-            teams.qualifyTeam(A);
-            teams.qualifyTeam(B);
-            teams.qualifyTeam(C);
+
+            try {
+                teams.qualifyTeam(A);
+                teams.qualifyTeam(B);
+                teams.qualifyTeam(C);
+            } catch (TeamAlreadyExistsException e) {
+                fail();
+            }
 
             assertEquals(3, teams.getSize());
 
@@ -81,8 +87,14 @@ public class JsonWriterTest extends JsonTest {
 
             HockeyTeam van = new HockeyTeam("Vancouver Canucks", 36, 27);
             HockeyTeam cal = new HockeyTeam("Calgary Flames", 36, 27);
-            teams.qualifyTeam(van);
-            teams.qualifyTeam(cal);
+
+            try {
+                teams.qualifyTeam(van);
+                teams.qualifyTeam(cal);
+            } catch (TeamAlreadyExistsException e) {
+                fail();
+            }
+
             assertEquals(2, teams.getSize());
 
             HockeyPlayer vanFirst = new HockeyPlayer("J. Miller", 27, 45);

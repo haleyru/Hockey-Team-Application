@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 // Represents a hockey team having a name, a number of wins, losses, and total games played.
 public class HockeyTeam implements Writable {
@@ -127,6 +128,23 @@ public class HockeyTeam implements Writable {
             jsonArray.put(p.toJson());
         }
         return jsonArray;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        HockeyTeam that = (HockeyTeam) o;
+        return teamName.equals(that.teamName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamName);
     }
 }
 

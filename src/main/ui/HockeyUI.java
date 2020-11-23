@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.TeamAlreadyExistsException;
 import model.HockeyPlayer;
 import model.HockeyTeam;
 import model.QualifiedTeams;
@@ -12,15 +13,20 @@ import java.util.Scanner;
 
 // Hockey Team Application UI
 // ** Uses parts of the TellerApp program **
-public class HockeyConsoleUI {
+public class HockeyUI {
     private static final String JSON_STORE = "./data/hockeyTeams.json";
     public QualifiedTeams qualified;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+
+    public static void main(String[] args) {
+        new HockeyUI();
+    }
+
     // EFFECTS: runs hockey application
-    public HockeyConsoleUI() {
+    public HockeyUI() {
         qualified = new QualifiedTeams();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -233,7 +239,11 @@ public class HockeyConsoleUI {
         String name = input.nextLine();
 
         HockeyTeam team = new HockeyTeam(name, wins, losses);
-        qualified.qualifyTeam(team);
+        try {
+            qualified.qualifyTeam(team);
+        } catch (TeamAlreadyExistsException e) {
+            System.out.println("" + name + " already exists!");
+        }
         System.out.println("" + name + " added successfully!");
     }
 

@@ -29,7 +29,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     private static final String retirePlayerString = "Retire Player";
     private static final String retireTeamString = "Retire Team";
     public static JFrame frame = new JFrame("Hockey Team Application");
-    private static final String JSON_STORE = "./data/hockeyTeams.json";
+    public static final String JSON_STORE = "./data/hockeyTeams.json";
     private static final ImageIcon icon = new ImageIcon("./pictures/nhl.png");
     private JButton addTeamButton;
     private JButton addPlayerButton;
@@ -44,8 +44,13 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     public static JTextField playerName;
     public static DefaultListModel<String> teamModel;
     public static DefaultListModel<String> playersModel;
-    private static boolean load;
-    private static JsonWriter jsonWriter;
+    public static boolean load;
+    public static JsonWriter jsonWriter;
+    public static JsonReader jsonReader;
+
+    public static void main(String[] args) {
+        createAndShowGUI();
+    }
 
     // Loads + runs hockey application
     public HockeyGUI() {
@@ -53,7 +58,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
 
         // load teams depending on user input:
         jsonWriter = new JsonWriter(JSON_STORE);
-        JsonReader jsonReader = new JsonReader(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         if (load) {
             try {
                 qualifiedTeams = jsonReader.read();
@@ -67,8 +72,12 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         // helper functions for GUI:
         JScrollPane listScrollPane = setUpTeams(qualifiedTeams);
         JScrollPane listScrollPane2 = setUpPlayers();
-        setUpButtons();
+        setUpButtons(qualifiedTeams);
         drawGUI(listScrollPane, listScrollPane2);
+    }
+
+    public static QualifiedTeams getTeams() {
+        return qualifiedTeams;
     }
 
     // MODIFIES: this
@@ -86,7 +95,6 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     // EFFECTS: sets up team scroll pane - begins with loaded teams
     private JScrollPane setUpTeams(QualifiedTeams qualified) {
         teamModel = new DefaultListModel<>();
-
         // add all team names to pane
         for (HockeyTeam t : qualified.getTeams()) {
             teamModel.addElement(t.getTeamName());
@@ -102,20 +110,20 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
 
     // MODIFIES: this
     // EFFECTS: sets up + configures all buttons
-    private void setUpButtons() {
-        setUpRetirePlayerButton();
-        setUpRetireTeamButton();
-        setUpAddGoalButton();
-        setUpAddAssistButton();
-        setUpViewPlayersButton();
-        setUpAddTeamButton();
-        setUpAddPlayerButton();
+    private void setUpButtons(QualifiedTeams qualifiedTeams) {
+        setUpRetirePlayerButton(qualifiedTeams);
+        setUpRetireTeamButton(qualifiedTeams);
+        setUpAddGoalButton(qualifiedTeams);
+        setUpAddAssistButton(qualifiedTeams);
+        setUpViewPlayersButton(qualifiedTeams);
+        setUpAddTeamButton(qualifiedTeams);
+        setUpAddPlayerButton(qualifiedTeams);
     }
 
     // EFFECTS: sets up + configures add player button
-    private void setUpAddPlayerButton() {
+    private void setUpAddPlayerButton(QualifiedTeams qualifiedTeams) {
         addPlayerButton = new JButton(addPlayerString);
-        AddPlayerListener addplayerlistener = new AddPlayerListener(addPlayerButton);
+        AddPlayerListener addplayerlistener = new AddPlayerListener(addPlayerButton, qualifiedTeams);
         addPlayerButton.setActionCommand(addPlayerString);
         addPlayerButton.addActionListener(addplayerlistener);
         addPlayerButton.setEnabled(false);
@@ -126,25 +134,25 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     }
 
     // EFFECTS: sets up + configures retire player button
-    private void setUpRetirePlayerButton() {
+    private void setUpRetirePlayerButton(QualifiedTeams qualifiedTeams) {
         retirePlayerButton = new JButton(retirePlayerString);
-        RetirePlayerListener retireplayerlistener = new RetirePlayerListener();
+        RetirePlayerListener retireplayerlistener = new RetirePlayerListener(qualifiedTeams);
         retirePlayerButton.setActionCommand(retirePlayerString);
         retirePlayerButton.addActionListener(retireplayerlistener);
     }
 
     // EFFECTS: sets up + configures retire team button
-    private void setUpRetireTeamButton() {
+    private void setUpRetireTeamButton(QualifiedTeams qualifiedTeams) {
         retireTeamButton = new JButton(retireTeamString);
-        RetireTeamListener retireteamlistener = new RetireTeamListener();
+        RetireTeamListener retireteamlistener = new RetireTeamListener(qualifiedTeams);
         retireTeamButton.setActionCommand(retireTeamString);
         retireTeamButton.addActionListener(retireteamlistener);
     }
 
     // EFFECTS: sets up + configures add team button
-    private void setUpAddTeamButton() {
+    private void setUpAddTeamButton(QualifiedTeams qualifiedTeams) {
         addTeamButton = new JButton(addTeamString);
-        AddTeamListener addteamlistener = new AddTeamListener(addTeamButton);
+        AddTeamListener addteamlistener = new AddTeamListener(addTeamButton, qualifiedTeams);
         addTeamButton.setActionCommand(addTeamString);
         addTeamButton.addActionListener(addteamlistener);
         addTeamButton.setEnabled(false);
@@ -155,25 +163,25 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     }
 
     // EFFECTS: sets up + configures view players button
-    private void setUpViewPlayersButton() {
+    private void setUpViewPlayersButton(QualifiedTeams qualifiedTeams) {
         viewPlayersButton = new JButton(viewPlayerString);
-        ViewPlayersListener viewplayerslistener = new ViewPlayersListener();
+        ViewPlayersListener viewplayerslistener = new ViewPlayersListener(qualifiedTeams);
         viewPlayersButton.setActionCommand(viewPlayerString);
         viewPlayersButton.addActionListener(viewplayerslistener);
     }
 
     // EFFECTS: sets up + configures add assist button
-    private void setUpAddAssistButton() {
+    private void setUpAddAssistButton(QualifiedTeams qualifiedTeams) {
         addAssistButton = new JButton(addAssistString);
-        AddAssistListener addassistlistener = new AddAssistListener();
+        AddAssistListener addassistlistener = new AddAssistListener(qualifiedTeams);
         addAssistButton.setActionCommand(addAssistString);
         addAssistButton.addActionListener(addassistlistener);
     }
 
     // EFFECTS: sets up + configures add goal button
-    private void setUpAddGoalButton() {
+    private void setUpAddGoalButton(QualifiedTeams qualifiedTeams) {
         addGoalButton = new JButton(addGoalString);
-        AddGoalListener addgoallistener = new AddGoalListener();
+        AddGoalListener addgoallistener = new AddGoalListener(qualifiedTeams);
         addGoalButton.setActionCommand(addGoalString);
         addGoalButton.addActionListener(addgoallistener);
     }
@@ -208,17 +216,14 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         add(buttonPane2, BorderLayout.AFTER_LAST_LINE);
     }
 
-
-    // MODIFIES: this
-    // EFFECTS: create the hockey application GUI and display it
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         // opens load GUI when GUI is first run:
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                confirmAndOpen();
+                HockeyGUI.confirmAndOpen();
             }
         });
 
@@ -226,7 +231,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                confirmAndExit();
+                HockeyGUI.confirmAndExit();
             }
         });
 
@@ -304,11 +309,6 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             //Selection, enable button.
             viewPlayersButton.setEnabled(teams.getSelectedIndex() != -1);
         }
-    }
-
-    // EFFECTS: starts GUI
-    public static void main(String[] args) {
-        createAndShowGUI();
     }
 }
 
