@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 // Represents a list of hockey teams qualified to play this season
 public class QualifiedTeams implements Writable {
-    private ArrayList<HockeyTeam> teams;
+    private final ArrayList<HockeyTeam> teams;
 
     // EFFECTS: construct empty list of qualified hockey teams
     public QualifiedTeams() {
@@ -45,19 +45,16 @@ public class QualifiedTeams implements Writable {
     // MODIFIES: this
     // EFFECTS: remove hockey team from list of qualified hockey teams
     public void unQualifyTeam(HockeyTeam t) {
-        if (teams.contains(t)) {
-            teams.remove(t);
-        }
+        teams.remove(t);
     }
 
     // EFFECTS: return string representation of all qualified hockey team names
     public String teamList() {
-        int i = 0;
-        ArrayList<String> teamlist = new ArrayList<>();
+        ArrayList<String> teamList = new ArrayList<>();
         for (HockeyTeam t : teams) {
-            teamlist.add(t.getTeamName());
+            teamList.add(t.getTeamName());
         }
-        return "Teams = " + teamlist + "";
+        return "Teams = " + teamList + "";
     }
 
     // EFFECTS: return top team based on wins and number of games played

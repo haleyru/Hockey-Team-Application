@@ -19,7 +19,7 @@ import static gui.HockeyGUI.playSound;
 class AddPlayerListener implements ActionListener, DocumentListener {
     private boolean alreadyEnabled = false;
     private final JButton button;
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public AddPlayerListener(JButton button, QualifiedTeams qualifiedTeams) {
         this.button = button;

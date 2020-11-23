@@ -3,8 +3,10 @@ package gui;
 import model.HockeyPlayer;
 import model.HockeyTeam;
 import model.QualifiedTeams;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import static gui.HockeyGUI.playSound;
 import static gui.HockeyGUI.players;
 import static gui.HockeyGUI.playersModel;
@@ -12,7 +14,7 @@ import static gui.HockeyGUI.teams;
 
 // Configures retire player button
 public class RetirePlayerListener implements ActionListener {
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public RetirePlayerListener(QualifiedTeams qualifiedTeams) {
         this.qualifiedTeams = qualifiedTeams;

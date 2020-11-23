@@ -9,11 +9,11 @@ import java.util.Objects;
 
 // Represents a hockey team having a name, a number of wins, losses, and total games played.
 public class HockeyTeam implements Writable {
-    private String teamName;                     // Name of hockey team
+    private final String teamName;                     // Name of hockey team
     private int gamesPlayed;                     // Total games played this season
     private int wins;                            // Total wins this season
     private int losses;                          // Total losses this season
-    private ArrayList<HockeyPlayer> team;        // List of hockey players on team
+    private final ArrayList<HockeyPlayer> team;        // List of hockey players on team
 
     // EFFECTS: construct an empty list of hockey players, total wins and losses and total games played
     public HockeyTeam(String name, int wins, int losses) {

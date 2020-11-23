@@ -14,7 +14,7 @@ import static gui.HockeyGUI.playSound;
 
 // Configures add assist button
 class AddAssistListener implements ActionListener {
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public AddAssistListener(QualifiedTeams qualifiedTeams) {
         this.qualifiedTeams = qualifiedTeams;

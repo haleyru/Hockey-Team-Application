@@ -15,7 +15,7 @@ import static gui.HockeyGUI.playSound;
 
 // Configures add goal button
 class AddGoalListener implements ActionListener {
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public AddGoalListener(QualifiedTeams qualifiedTeams) {
         this.qualifiedTeams = qualifiedTeams;

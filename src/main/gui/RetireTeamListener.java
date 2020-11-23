@@ -13,7 +13,7 @@ import static gui.HockeyGUI.playSound;
 
 // Configures retire team button
 class RetireTeamListener implements ActionListener {
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public RetireTeamListener(QualifiedTeams qualifiedTeams) {
         this.qualifiedTeams = qualifiedTeams;

@@ -60,6 +60,15 @@ public class QualifiedTeamsTest {
     }
 
     @Test
+    public void testUnQualifyTeamDoesNotExist() {
+        HockeyTeam team1 = new HockeyTeam("Zoomers", 5, 2);
+        QualifiedTeams qualified = new QualifiedTeams();
+        assertEquals(0,qualified.getSize());
+        qualified.unQualifyTeam(team1);
+        assertEquals(0,qualified.getSize());
+    }
+
+    @Test
     public void testTeamList() {
         HockeyTeam team1 = new HockeyTeam("Zoomers", 0, 0);
         QualifiedTeams qualified = new QualifiedTeams();

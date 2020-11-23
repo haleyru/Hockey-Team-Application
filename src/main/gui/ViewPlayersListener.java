@@ -12,7 +12,7 @@ import static gui.HockeyGUI.playSound;
 
 // Configures view player button
 class ViewPlayersListener implements ActionListener {
-    private QualifiedTeams qualifiedTeams;
+    private final QualifiedTeams qualifiedTeams;
 
     public ViewPlayersListener(QualifiedTeams qualifiedTeams) {
         this.qualifiedTeams = qualifiedTeams;

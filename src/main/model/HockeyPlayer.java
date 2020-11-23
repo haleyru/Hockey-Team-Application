@@ -5,7 +5,7 @@ import persistence.Writable;
 
 // Represents single hockey player with name, number of goals, assists, and points.
 public class HockeyPlayer implements Writable {
-    private String name;                     // Player name
+    private final String name;                     // Player name
     private int goals;                       // Player goals
     private int assists;                     // Player assists
     private int points;                      // Player points (goals + assists)
