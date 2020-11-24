@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HockeyTeamTest {
 
@@ -85,5 +86,13 @@ public class HockeyTeamTest {
         team1.addPlayer(b);
         team1.addPlayer(c);
         assertEquals(c, team1.topPlayer());
+    }
+
+    @Test
+    public void testHashCodeAndEquals(){
+        HockeyTeam team1 = new HockeyTeam("Zoomers", 0, 0);
+        HockeyTeam team2 = null;
+        assertFalse(team1.equals(team2));
+        assertEquals(1554647218, team1.hashCode());
     }
 }
