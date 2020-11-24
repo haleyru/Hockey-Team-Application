@@ -28,4 +28,4 @@ This application may be used by hardcore hockey fans, including me and my dad! C
 I have chosen to give the QualifiedTeams class a robust design, where the TeamAlreadyExistsException is thrown if the user tries to add a team with an already existing team name. Cases of where the exception is thrown and where it is not thrown has been tested in QualifiedTeamsTest.
 
 ## Phase 4: Task 3:
-If I had more time to refactor, I would maybe refactor each of the listener classes into a single listener class to keep all button configurations together. The relationship between the model classes should not change, however there may be a nicer way refactor everything else (that I can't think of).  
+If I had more time to refactor, I would maybe refactor each of the listener classes into a single listener class to keep all button configurations together. The relationship between the model classes should not change, however there may be a nicer way refactor the gui package (that I can't think of).  
