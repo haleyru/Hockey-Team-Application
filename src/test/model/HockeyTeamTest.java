@@ -91,8 +91,10 @@ public class HockeyTeamTest {
     @Test
     public void testHashCodeAndEquals(){
         HockeyTeam team1 = new HockeyTeam("Zoomers", 0, 0);
+        HockeyPlayer player1 = new HockeyPlayer("Dave", 4,3);
         HockeyTeam team2 = null;
         assertFalse(team1.equals(team2));
+        assertFalse(team1.equals(player1));
         assertEquals(1554647218, team1.hashCode());
     }
 }
