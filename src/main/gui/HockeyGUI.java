@@ -63,7 +63,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
             try {
                 qualifiedTeams = jsonReader.read();
             } catch (IOException e) {
-                System.out.println("Unable to read from file: " + JSON_STORE);
+                playSound("./sounds/error.wav", 0.10); // play appropriate sound effect
             }
         } else {
             qualifiedTeams = new QualifiedTeams();
@@ -74,10 +74,6 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
         JScrollPane listScrollPane2 = setUpPlayers();
         setUpButtons(qualifiedTeams);
         drawGUI(listScrollPane, listScrollPane2);
-    }
-
-    public static QualifiedTeams getTeams() {
-        return qualifiedTeams;
     }
 
     // MODIFIES: this
@@ -95,6 +91,7 @@ public class HockeyGUI extends JPanel implements ListSelectionListener {
     // EFFECTS: sets up team scroll pane - begins with loaded teams
     private JScrollPane setUpTeams(QualifiedTeams qualified) {
         teamModel = new DefaultListModel<>();
+
         // add all team names to pane
         for (HockeyTeam t : qualified.getTeams()) {
             teamModel.addElement(t.getTeamName());
