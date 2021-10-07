@@ -17,7 +17,7 @@ import javax.sound.sampled.Clip;
 import java.io.File;
 
 
-// Hockey Team Application GUI
+// Hockey Team Application GUI.
 // ** Borrows features from ListDemo.java from oracle
 public class HockeyGUI extends JPanel implements ListSelectionListener {
     public static QualifiedTeams qualifiedTeams;
