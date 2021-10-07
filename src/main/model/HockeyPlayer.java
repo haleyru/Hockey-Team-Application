@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 // Represents single hockey player with name, number of goals, assists, and points.
 public class HockeyPlayer implements Writable {
     private final String name;                     // Player name
@@ -66,5 +68,21 @@ public class HockeyPlayer implements Writable {
         json.put("assists", assists);
         json.put("points", points);
         return json;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HockeyPlayer that = (HockeyPlayer) o;
+        return goals == that.goals &&
+                assists == that.assists &&
+                points == that.points &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, goals, assists, points);
     }
 }
